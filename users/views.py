@@ -5,9 +5,9 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import LoginSerializer , SignUpSerialzer
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 # Create your views here.
-
+User = get_user_model()
 class SignUpApi(APIView):
     def get(self , request):
         return Response(

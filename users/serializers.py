@@ -1,7 +1,9 @@
 from rest_framework import serializers
 from .models import customer
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
+
+User = get_user_model()
 class SignUpSerialzer(serializers.Serializer):
     username= serializers.CharField(max_length=255)
     fullName= serializers.CharField(max_length=255)
@@ -10,7 +12,8 @@ class SignUpSerialzer(serializers.Serializer):
     password2= serializers.CharField(write_only=True)
     class Meta:
         model=User
-        fields=['username', 'fullName' ,'number_id', 'password1' , 'password2']
+        fields=['id' , 'username', 'fullName' ,'number_id', 'password1' , 'password2']
+        read_only_fields = ['id']
     def validate(self, data):
         if data['password1'] != data['password2']:
             raise serializers.ValidationError('passwords are not equal.')
@@ -43,7 +46,7 @@ class SignUpSerialzer(serializers.Serializer):
 
         return user
 
-class LoginSerializer(serializers.ModelSerializer):
+class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField(write_only=True)
 
@@ -53,7 +56,7 @@ class LoginSerializer(serializers.ModelSerializer):
 
         user = User.objects.get(username=username)
 
-        if not User.objects.filter(user=user).exists():
+        if not User.objects.filter(username=username).exists():
             raise serializers.ValidationError('user is not exist')
         if not user.check_password(password):
             raise serializers.ValidationError('password is incorrect')
