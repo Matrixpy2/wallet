@@ -1,6 +1,6 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 
 from .serializers import LoginSerializer , SignUpSerialzer
 from rest_framework import status
@@ -52,7 +52,7 @@ class LogInApi(APIView):
             username = ser.validated_data['username']
             user = User.objects.get(username=username)
 
-            token = RefreshToken.for_user(user=user)
+            token = AccessToken.for_user(user=user)
             return Response(
                 {
                     'message' : f'you are logged in with {username} username',
