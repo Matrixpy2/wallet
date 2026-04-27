@@ -39,7 +39,7 @@ class MywalletsApi(viewsets.ModelViewSet):
         return Response(
             {
             'your wallets': serializer.data,
-            'check transactions': '/wallets/{wallet id}/transactions/'
+            'check transactions': '/api/{wallet id}/transactions/'
             },
             status=status.HTTP_200_OK
         )
